@@ -1549,6 +1549,15 @@ class FileHandler (object):
 
         if res == Gtk.PrintOperationResult.APPLY:
             self.print_settings = print_op.get_print_settings()
+        elif res == Gtk.PrintOperationResult.ERROR:
+            d = Gtk.MessageDialog(
+                parent = self.app.drawWindow,
+                message_type = Gtk.MessageType.ERROR,
+                buttons = Gtk.ButtonsType.CLOSE,
+                text = print_op.get_error()
+            )
+            d.run()
+            d.destroy()
 
     def _begin_print(self, operation, print_ctx, print_data):
         # TODO
