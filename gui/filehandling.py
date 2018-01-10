@@ -524,6 +524,7 @@ class FileHandler (object):
             'jpeg-90%': _SaveFormat.JPEG,
             'png-solid': _SaveFormat.PNG_SOLID,
         }
+        self.print_settings = None
 
     def _update_recent_items(self):
         """Updates self._recent_items from the GTK RecentManager.
@@ -1148,10 +1149,6 @@ class FileHandler (object):
             export = (action.get_name() == 'Export'),
         )
 
-    def print_cb(self, action):
-        # TODO
-        pass
-
     def save_scratchpad_as_dialog(self, export=False):
         if self.app.scratchpad_filename:
             current_filename = self.app.scratchpad_filename
@@ -1537,3 +1534,26 @@ class FileHandler (object):
         if not self._file_extension_regex.search(file_path):
             return False
         return True
+
+    def print_cb(self, action):
+        # TODO
+        print_op = Gtk.PrintOperation()
+
+        if self.print_settings != None:
+            print_op.set_print_settings(self.print_settings)
+
+        print_op.connect("begin_print", self._begin_print, None)
+        print_op.connect("draw_page", self._draw_page, None)
+
+        res = print_op.run(Gtk.PrintOperationAction.PRINT_DIALOG, self.app.drawWindow)
+
+        if res == Gtk.PrintOperationResult.APPLY:
+            self.print_settings = print_op.get_print_settings()
+
+    def _begin_print(self, operation, print_ctx, print_data):
+        # TODO
+        operation.set_n_pages(1)
+
+    def _draw_page(self, operation, print_ctx, page_num, print_data):
+        # TODO
+        pass
