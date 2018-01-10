@@ -1148,6 +1148,10 @@ class FileHandler (object):
             export = (action.get_name() == 'Export'),
         )
 
+    def print_cb(self, action):
+        # TODO
+        pass
+
     def save_scratchpad_as_dialog(self, export=False):
         if self.app.scratchpad_filename:
             current_filename = self.app.scratchpad_filename
